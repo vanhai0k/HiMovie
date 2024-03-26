@@ -78,6 +78,7 @@ const InfoMe = ({navigation}) => {
             <View style={{marginTop:50}}>
             <Button  title="Dang xuat" onPress={logout} />
             </View>
+            
     </View>
   )
 }
