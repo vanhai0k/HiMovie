@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div style="width: 400px;height: auto;margin: 0 auto;margin-top: 70px;text-align: center;">
+        <div style="margin-bottom: 40px;">
+            <a style="size: 24px;" href="/movie/listMovie">
+                <h3>Danh sach phim</h3>
+            </a>
+        <form action="" method="POST" enctype="multipart/form-data">
+            <input style="width: 270px;height: 40px;padding-left: 10px;"
+            type="number" name="episodeName" placeholder="Episode Name"><hr />
+
+
+            <div style="text-align: center;">
+                <video
+                  src=""
+                  id="selectedVideo"
+                  alt="Selected Video"
+                  style="width: 160px; height: 160px; margin-bottom: 10px;"
+                  controls
+                ></video>
+                <input
+                  type="file"
+                  id="inputVideo"
+                  onchange="displayVideo()"
+                  name="video"
+                  accept="video/*"
+                  style="margin-bottom: 20px;"
+                  required
+                />
+              </div><hr />
+            <button type="submit">Create Episode</button>
+          </form>
+          
+    </div>
+    <script>
+        function displayVideo() {
+    const fileInput = document.getElementById('inputFile');
+    const selectedVideo = document.getElementById('selectedVideo');
+
+    // Check if files are selected
+    if (fileInput.files && fileInput.files[0]) {
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function(event) {
+        selectedVideo.src = event.target.result;
+      };
+
+      // Read the selected video file as a URL
+      reader.readAsDataURL(file);
+    }
+  }
+    </script>
+</body>
+</html>

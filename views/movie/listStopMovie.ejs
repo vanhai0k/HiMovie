@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div style="display: flex ;flex-direction: row;">
+        <a style="size: 24px;" href="/movie/postMovie">
+            <h3>Them phim</h3>
+        </a>
+        <a style="size: 24px;margin-left: 20px;" href="/movie/listMovie">
+            <h3>Danh sách phim đang chiếu</h3>
+        </a>
+    </div>
+    <div  style="display: flex;margin: 0 auto;">
+        
+
+            <% 
+                listMovie.forEach( (data) =>{
+                    %>
+                    <div style="flex-direction: row;margin: 8px;border: 2px solid rgb(28, 136, 198);
+                    border-radius: 10px;">
+                        <div style="position: relative; display: inline-block;">
+                            <img 
+                                src="/<%= data.image %>"
+                                style="border-radius: 10px;"
+                                class="rounded-circle" 
+                                width="300px" 
+                                height="370px" 
+                                style="margin-top: 0px;" 
+                                onmouseover="showDialog(event, '<%= data.namemovie %>', '<%= data.directed %>', '<%= data.contnet %>')" 
+                                onmousemove="moveDialog(event)" 
+                                onmouseout="hideDialog()" 
+                            />
+                            <div id="imageDialog" style="display: none; position: absolute; background-color: rgba(255, 255, 255); 
+                            color: white; padding: 10px; border-radius: 5px; z-index: 999; width: 290px; height: 320px;">
+                                <!-- Content of the dialog -->
+                                <p id="movieName" style="color: rgb(61, 61, 62);"></p>
+                                <p id="directedBy"style="color: rgb(61, 61, 62);"></p>
+                                <p id="releaseDate"style="color: rgb(61, 61, 62);
+                                max-height: 220px; overflow-y: auto;"></p>
+                            </div>
+                        </div>
+                        
+
+                    <p style="text-align: center;"><%= data.namemovie %></p>
+                    <p style="text-align: center;"><%= data.timemovie %> phut</p>
+                    <div style="text-align: center;">
+                      <% if(data.statusMovie == 1) {%>
+                            <p style="color: red;font-weight: bold;size: 20px;"
+                            > Mất phí </p>
+                        <%} else{%>
+                            <p style="color: rgb(30, 193, 54);font-weight: bold;size: 20px;"
+                            >Miễn phí</p>
+                          <%}
+                        
+                        %>
+                    </div>
+                    <div style="text-align: center;margin-bottom: 8px;">
+                        <a style="margin-right: 17px;"
+                        href="/movie/updateMovie/<%= data._id %>">
+                            update
+                        </a>
+                        <a style="margin-right: 17px;"
+                         href="">
+                            delete
+                        </a>
+                        <a style="margin-right: 17px;"
+                        href="/movie/postEpisode/<%= data._id %>">
+                            them tap phim
+                        </a>
+                        <br/>
+                        <!-- <a style="margin-right: 17px;"
+                        href="/movie/postEpisode/<%= data._id %>"
+                        >
+                            Dừng chiếu
+                        </a> -->
+                        <td style="text-align: center;">
+                          <form id="updateStatusForm_<%= data._id %>" action="/movie/updatestatusProduct/<%= data._id %>" method="post">
+                            <% if(data.status == 1){ %>
+                              <button type="button" style="margin-top: 20px;" onclick="stopMovie('<%= data._id %>')"> 
+                                Mở chiếu
+                              </button>
+                            <% } else { %>
+                              <!-- Add the code for the inactive state here -->
+                            <% } %>
+                          </form>
+                        </td>
+                        <script>
+                          async function stopMovie(movieId) {
+                            try {
+                              const response = await fetch(`/movie/startMovie/${movieId}`, {
+                                method: 'POST'
+                              });
+                              const data = await response.json();
+                              console.log(data); // Log phản hồi từ máy chủ (nếu cần)
+                        
+                              // Tải lại trang để cập nhật danh sách phim
+                              window.location.reload();
+                            } catch (error) {
+                              console.error(error);
+                            }
+                          }
+                        </script>
+                    </div>
+                    </div>
+                    <%
+                } )
+            %>
+    </div>
+    <script>
+        function showDialog(event, movieName, directedBy, releaseDate) {
+            var dialog = document.getElementById("imageDialog");
+            var movieNameElement = document.getElementById("movieName");
+            var directedByElement = document.getElementById("directedBy");
+            var releaseDateElement = document.getElementById("releaseDate");
+            movieNameElement.innerText = "Movie: " + movieName;
+            directedByElement.innerText = "Directed By: " + directedBy;
+            releaseDateElement.innerText = "Content: " + releaseDate
+            dialog.style.display = "block";
+        }
+    
+        function moveDialog(event) {
+            var dialog = document.getElementById("imageDialog");
+            dialog.style.left = event.pageX + 10 + "px"; // Adjust the position based on mouse pointer
+            dialog.style.top = event.pageY + 10 + "px"; // Adjust the position based on mouse pointer
+        }
+    
+        function hideDialog() {
+            var dialog = document.getElementById("imageDialog");
+            dialog.style.display = "none";
+        }
+    </script>
+</body>
+</html>

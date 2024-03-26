@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+
+    <div>
+      <a style="size: 24px;" href="/movie/listMovie">
+          <h3>Danh sach phim</h3>
+      </a>
+  </div>
+    <div style="margin: auto; width: 500px;">
+
+        <form method="post" enctype="multipart/form-data">
+          <div style="text-align: center; margin-bottom: 20px;">
+            <h2>Add New Movie</h2>
+          </div>
+      
+          <!-- Image Upload -->
+          <div style="text-align: center;">
+            <img
+              src="https://boschbrandstore.com/wp-content/uploads/2019/01/no-image.png"
+              id="selectedImage"
+              alt="Selected Image"
+              style="width: 160px; height: 160px; margin-bottom: 10px;"
+            />
+            <input
+              type="file"
+              id="inputImage"
+              onchange="displayImage()"
+              name="image"
+              style="margin-bottom: 20px;"
+              required
+            />
+          </div>
+      
+          <!-- Video Upload -->
+          <div style="text-align: center;">
+            <video
+              src=""
+              id="selectedVideo"
+              alt="Selected Video"
+              style="width: 160px; height: 160px; margin-bottom: 10px;"
+              controls
+            ></video>
+            <input
+              type="file"
+              id="inputVideo"
+              onchange="displayVideo()"
+              name="videomovie"
+              accept="video/*"
+              style="margin-bottom: 20px;"
+              required
+            />
+          </div>
+      
+          <!-- Movie Details -->
+          <div style="text-align: center;">
+            <input
+              type="text"
+              placeholder="Movie Name"
+              name="namemovie"
+              style="width: 300px; margin-bottom: 10px;"
+              required
+            /><br />
+            <input
+              type="text"
+              placeholder="Content"
+              name="content"
+              style="width: 300px; margin-bottom: 10px;"
+              required
+            /><br />
+            <input
+              type="text"
+              placeholder="Release Date"
+              name="timemovie"
+              style="width: 300px; margin-bottom: 10px;"
+              required
+            /><br />
+            <input
+              type="text"
+              placeholder="Directed By"
+              name="directed"
+              style="width: 300px; margin-bottom: 10px;"
+              required
+            /><br />
+          </div>
+      
+          <!-- Movie Category -->
+          <div style="text-align: center; margin-bottom: 10px;">
+            <h5>Movie Category</h5>
+            <select name="category" style="width: 300px; margin-bottom: 10px;">
+              <option disabled selected>Select movie category</option>
+              <% listLoai.forEach(data => { %>
+              <option value="<%= data.id %>"><%= data.name %></option>
+              <% }) %>
+            </select>
+          </div>
+      
+          <!-- Movie Status -->
+          <div style="text-align: center; margin-bottom: 20px;">
+            <div class="form-check-inline">
+                <input class="form-check-input" type="radio" name="statusMovie" id="radioFree" value="0"checked>
+                <label class="form-check-label" for="radioFree">Free</label>
+              </div>
+            <div class="form-check-inline">
+              <input class="form-check-input" type="radio" name="statusMovie" id="radioCopyright" value="1">
+              <label class="form-check-label" for="radioCopyright">Copyright</label>
+            </div>
+          </div>
+      
+          <!-- Submit Button -->
+          <div style="text-align: center;">
+            <button type="submit" style="width: 150px; padding: 10px;">Add Movie</button>
+          </div>
+        </form>
+      </div>
+      
+    <script>
+      function displayImage() {
+        var input = document.getElementById("inputFile");
+        var image = document.getElementById("selectedImage");
+
+        var file = input.files[0];
+
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          image.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+      
+      function displayVideo() {
+    const fileInput = document.getElementById('inputFile');
+    const selectedVideo = document.getElementById('selectedVideo');
+
+    // Check if files are selected
+    if (fileInput.files && fileInput.files[0]) {
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function(event) {
+        selectedVideo.src = event.target.result;
+      };
+
+      // Read the selected video file as a URL
+      reader.readAsDataURL(file);
+    }
+  }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div style="display: flex ;flex-direction: row;">
+        <a style="size: 24px;" href="/movie/postMovie">
+            <h3>Them phim</h3>
+        </a>
+        <a style="size: 24px;margin-left: 20px;" href="/movie/listStopMovie">
+            <h3>Danh sách phim dừng chiếu</h3>
+        </a>
+    </div>
+    <div style="width: 2000px;height: au;margin: 0 auto;">
+      <div style="display: flex;flex-direction: row;">
+        <nav style="width: 65%;height: auto;display: flex;flex-wrap: wrap;flex-direction: row;">
+          <div style="height: 300px;width: 100%;display: flex;flex-wrap: wrap;flex-direction: row;">
+            <% if (listMovie && listMovie.length) { %>
+          <%
+          listMovie.forEach((data) => {
+          %>
+          <div style="padding: 8px;">
+            <div style="border: 2px solid rgb(28, 136, 198);border-radius: 10px;">
+              <div style="position: relative; display: inline-block;">
+                <img src="/<%= data.image %>" style="border-radius: 10px;" class="rounded-circle" width="240px" height="260px" onmouseover="showDialog(event, '<%= data.namemovie %>', '<%= data.directed %>', '<%= data.contnet %>')" onmousemove="moveDialog(event)" onmouseout="hideDialog()" />
+                <div id="imageDialog" style="display: none; position: absolute; background-color: rgba(255, 255, 255); color: white; padding: 10px; border-radius: 5px; z-index: 999; width: 290px; height: 320px;">
+                  <!-- Content of the dialog -->
+                  <p id="movieName" style="color: rgb(61, 61, 62);"></p>
+                  <p id="directedBy" style="color: rgb(61, 61, 62);"></p>
+                  <p id="releaseDate" style="color: rgb(61, 61, 62); max-height: 220px; overflow-y: auto;"></p>
+                </div>
+              </div>
+              <p style="text-align: center;"><%= data.namemovie %></p>
+              <p style="text-align: center;"><%= data.timemovie %> phut</p>
+              <div style="text-align: center;">
+                <% if(data.statusMovie == 1) {%>
+                      <p style="color: red;font-weight: bold;size: 24px;"
+                      > Mất phí </p>
+                  <%} else{%>
+                      <p style="color: rgb(30, 193, 54);font-weight: bold;size: 24px;"
+                      >Miễn phí</p>
+                    <%}
+                  
+                  %>
+              </div>
+              <div style="text-align: center;margin-bottom: 8px;">
+                <a style="margin-right: 17px;" href="/movie/updateMovie/<%= data._id %>">update</a>
+                <a style="margin-right: 17px;" href="">delete</a>
+                <a style="margin-right: 17px;" href="/movie/postEpisode/<%= data._id %>">them tap phim</a>
+                <br />
+                <td style="text-align: center;">
+                  <form id="updateStatusForm_<%= data._id %>" action="/product/updatestatusProduct/<%= data._id %>" method="post">
+                    <% if(data.status == 0){ %>
+                    <button type="button" style="margin-top: 20px;" onclick="stopMovie('<%= data._id %>')"> Dừng chiếu </button>
+                    <% } else { %>
+                    <!-- Add the code for the inactive state here -->
+                    <% } %>
+                  </form>
+                </td>
+                <script>
+                  async function stopMovie(movieId) {
+                    try {
+                      const response = await fetch(`/movie/stopMovie/${movieId}`, {
+                        method: 'POST'
+                      });
+                      const data = await response.json();
+                      console.log(data); // Log phản hồi từ máy chủ (nếu cần)
+    
+                      // Tải lại trang để cập nhật danh sách phim
+                      window.location.reload();
+                    } catch (error) {
+                      console.error(error);
+                    }
+                  }
+                </script>
+              </div>
+            </div>
+          </div>
+          <%});%>
+          <% } else { %>
+            <p>No top movies available</p>
+          <% } %>
+
+        </div>
+        </nav>
+        <article style="width: 35%;height: auto;">
+
+          
+          <h2 style="text-align: center;">Phim hot</h2>
+          <% if (listTopMovies && listTopMovies.length) { %>
+            <% listTopMovies.forEach(movie => { %>
+              <div style="display: flex;flex-direction: row;margin-bottom: 20px;">
+                <div style="width: 25%;border-radius: 10px;overflow: hidden;">
+                  <img src="/<%= movie.image %>" style="width: 90%;height: 200px;border-radius: 10px;" />
+                </div>
+                <div style="width: 75%;padding: 10px;">
+                  <h3><%= movie.namemovie %></h3>
+                  <p style="height: 90px; overflow-y: auto;">
+                    <%= movie.contnet %>
+                  </p>
+                  <p><%= movie.countView %> lượt xem</p>
+                </div>
+              </div>
+            <% }); %>
+          <% } else { %>
+            <p>No top movies available</p>
+          <% } %>
+          
+
+          
+        </article>
+        
+      </div>
+    </div>
+    
+    <script>
+        function showDialog(event, movieName, directedBy, releaseDate) {
+            var dialog = document.getElementById("imageDialog");
+            var movieNameElement = document.getElementById("movieName");
+            var directedByElement = document.getElementById("directedBy");
+            var releaseDateElement = document.getElementById("releaseDate");
+            movieNameElement.innerText = "Movie: " + movieName;
+            directedByElement.innerText = "Directed By: " + directedBy;
+            releaseDateElement.innerText = "Content: " + releaseDate
+            dialog.style.display = "block";
+        }
+    
+        function moveDialog(event) {
+            var dialog = document.getElementById("imageDialog");
+            dialog.style.left = event.pageX + 10 + "px"; // Adjust the position based on mouse pointer
+            dialog.style.top = event.pageY + 10 + "px"; // Adjust the position based on mouse pointer
+        }
+    
+        function hideDialog() {
+            var dialog = document.getElementById("imageDialog");
+            dialog.style.display = "none";
+        }
+    </script>
+</body>
+</html>

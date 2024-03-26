@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <a style="size: 24px" href="/movie/listMovie"> <h3>Danh sach phim</h3> </a>
+    </div>
+    <div style="display: flex; margin: 0 auto">
+      <form action="" method="post" enctype="multipart/form-data">
+        <div style="position: relative; display: inline-block">
+          <img
+            src="/<%= oldMovie.image %>"
+            style="border-radius: 10px"
+            class="rounded-circle"
+            width="300px"
+            height="370px"
+            style="margin-top: 0px"
+          />
+          <input
+            type="file"
+            id="inputImage"
+            onchange="displayImage()"
+            name="image"
+            style="margin-bottom: 20px"
+            required
+          />
+          <div
+            id="imageDialog"
+            style="
+              display: none;
+              position: absolute;
+              background-color: rgba(255, 255, 255);
+              color: white;
+              padding: 10px;
+              border-radius: 5px;
+              z-index: 999;
+              width: 290px;
+              height: 230px;
+            "
+          >
+            <!-- Content of the dialog -->
+          </div>
+        </div>
+        <div>
+          <h3>Video Demo</h3>
+          <video
+            src="/<%= oldMovie.videomovie %>"
+            id="selectedVideo"
+            alt="Selected Video"
+            style="width: 300px; height: 370px"
+            controls
+          ></video>
+          <input
+            type="file"
+            id="inputVideo"
+            onchange="displayVideo()"
+            name="videomovie"
+            accept="video/*"
+            style="margin-bottom: 20px"
+            required
+          />
+        </div>
+
+        <div class="form-outline" style="margin-top: 40px">
+          <label class="form-label" for="typeEmail" style="font-size: 16px"
+            >Tên phim:
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            name="namemovie"
+            value="<%= oldMovie.namemovie %>"
+            style="
+              width: 550px;
+              height: 50px;
+              font-size: 18px;
+              margin-bottom: 15px;
+              padding-left: 12px;
+            "
+          />
+        </div>
+        <div class="form-outline" style="margin-top: 40px">
+          <label class="form-label" for="typeEmail" style="font-size: 16px"
+            >Nội dung:
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            name="contnet"
+            value="<%= oldMovie.contnet %>"
+            style="
+              width: 550px;
+              font-size: 18px;
+              margin-bottom: 15px;
+              padding-left: 12px;
+              height: 50px;
+              overflow-x: auto;
+              overflow-y: auto;
+            "
+          />
+        </div>
+        <div class="form-outline" style="margin-top: 40px">
+          <label class="form-label" for="typeEmail" style="font-size: 16px"
+            >Tác giả:
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            name="directed"
+            value="<%= oldMovie.directed %>"
+            style="
+              width: 550px;
+              height: 50px;
+              font-size: 18px;
+              margin-bottom: 15px;
+              padding-left: 12px;
+            "
+          />
+        </div>
+        <div class="form-outline" style="margin-top: 40px">
+          <label class="form-label" for="typeEmail" style="font-size: 16px"
+            >Thời gian:
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            name="timemovie"
+            value="<%= oldMovie.timemovie %>"
+            style="
+              width: 550px;
+              height: 50px;
+              font-size: 18px;
+              margin-bottom: 15px;
+              padding-left: 12px;
+            "
+          />
+        </div>
+
+        <div>Phân cấp</div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="statusMovie"
+          value="1" <% if(oldMovie.statusMovie==1) {%> checked <%} %> >
+          <label class="form-check-label" for="flexRadioDefault1">
+            Copyright
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="statusMovie"
+          value="0" <% if(oldMovie.statusMovie == 0) {%> checked <%} %> >
+          <label class="form-check-label" for="flexRadioDefault2"> Free </label>
+        </div>
+
+        <!-- Kiểm tra nếu có tập phim -->
+        <% if (oldMovie.episodes && oldMovie.episodes.length > 0) { %>
+        <h2>Danh sách các tập phim</h2>
+        <div style="display: flex; flex-direction: row">
+          <% oldMovie.episodes.forEach(function(episode) { %>
+          <!-- Truy cập vào các thuộc tính của đối tượng `idEpisodes` -->
+          <!-- Các trường thông tin khác của từng tập phim -->
+          <div style="margin: 10px">
+            <video
+              src="/<%= episode.idEpisodes.video %>"
+              id="selectedVideo"
+              alt="Selected Video"
+              style="width: 240px; height: 200px"
+              controls
+            ></video>
+            <p>Tập <%= episode.idEpisodes.episodeName %></p>
+            <label for="statusEpisode">Status:</label>
+            <select id="statusEpisode" name="statusEpisode">
+                <option value="0" <%= episode.idEpisodes.statusEpisode === 0 ? 'selected style="color: red;"' : '' %>>
+                  Pending</option>
+                <option value="1" <%= episode.idEpisodes.statusEpisode === 1 ? 'selected style="color: green;"' : '' %>>
+                  Completed
+                </option>
+            </select>
+          </div>
+          <% }); %>
+        </div>
+        <% } else { %>
+        <!-- Hiển thị thông báo nếu không có tập phim -->
+        <p>Không có tập phim.</p>
+        <% } %>
+
+        <div style="text-align: center; margin-top: 28px">
+          <button
+            type="submit"
+            class="btn btn-primary btn-block mb-4"
+            style="text-align: center; height: 50px; font-size: 20px"
+          >
+            Update Movie
+          </button>
+        </div>
+      </form>
+    </div>
+    <script>
+      function displayImage() {
+        var input = document.getElementById("inputFile");
+        var image = document.getElementById("selectedImage");
+
+        var file = input.files[0];
+
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          image.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function displayVideo() {
+        const fileInput = document.getElementById("inputFile");
+        const selectedVideo = document.getElementById("selectedVideo");
+
+        // Check if files are selected
+        if (fileInput.files && fileInput.files[0]) {
+          const file = fileInput.files[0];
+          const reader = new FileReader();
+
+          reader.onload = function (event) {
+            selectedVideo.src = event.target.result;
+          };
+
+          // Read the selected video file as a URL
+          reader.readAsDataURL(file);
+        }
+      }
+    </script>
+  </body>
+</html>
