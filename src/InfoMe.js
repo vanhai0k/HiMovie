@@ -82,7 +82,7 @@ const InfoMe = ({navigation}) => {
     </View>
   )
 }
-
+// info
 export default InfoMe
 
 const styles = StyleSheet.create({

@@ -15,7 +15,7 @@ import {
 } from "react-native-gesture-handler";
 import Swiper from "react-native-swiper";
 const { width } = Dimensions.get("window");
-
+//hone
 const Home = (props) => {
   const [data, setData] = useState([]);
   const [dataTopMovie, setdataTopMovie] = useState([])

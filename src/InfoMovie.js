@@ -14,7 +14,7 @@ import React, { useState, useEffect } from "react";
 import { API } from "../API/API";
 import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+//movi
 const InfoMovie = ({ route, navigation }) => {
   const {
     namemovie,
