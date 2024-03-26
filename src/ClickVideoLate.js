@@ -11,7 +11,7 @@ const ClickVideoLate = ({ route,navigation }) => {
     const screenWidth = Dimensions.get('window').width;
     const screenHeght = Dimensions.get('window').height;
     const [data, setdata] = useState([]);
-  
+  //ji
     const toggleFullscreen = () => {
       setIsFullscreen(!isFullscreen);
     };
